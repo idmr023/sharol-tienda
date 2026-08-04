@@ -12,16 +12,24 @@ import {
   verifyPassword,
 } from '@backend/services/authService'
 import { setAuthCookies } from '@backend/services/authSession'
+import { prisma } from '@backend/db'
 
-function getClientIp(req: NextRequest): string {
-  const forwarded = req.headers.get('x-forwarded-for')
-  if (forwarded) return forwarded.split(',')[0]!.trim()
-  return '127.0.0.1'
+async function assignPendingOrdersToUser(userId: string, email: string): Promise<void> {
+  const pendingOrders = await prisma.order.findMany({
+    where: { userId: null, customerEmail: email, status: 'SOLICITADO' },
+  })
+
+  for (const order of pendingOrders) {
+    await prisma.order.update({
+      where: { id: order.id },
+      data: { userId },
+    })
+  }
 }
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json()
+    const body = await req.json().catch(() => ({}))
     const input = parseLoginInput(body ?? {})
     const ip = getClientIp(req)
 
@@ -62,6 +70,9 @@ export async function POST(req: NextRequest) {
     await createSession(user.id, refreshToken)
     await setAuthCookies(accessToken, refreshToken)
 
+    // Asignar órdenes pendientes al usuario autenticado
+    await assignPendingOrdersToUser(user.id, input.email)
+
     return NextResponse.json({
       user: {
         id: user.id,
@@ -81,4 +92,10 @@ export async function POST(req: NextRequest) {
     console.error('POST /api/auth/login:', error)
     return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
   }
+}
+
+function getClientIp(req: NextRequest): string {
+  const forwarded = req.headers.get('x-forwarded-for')
+  if (forwarded) return forwarded.split(',')[0]!.trim()
+  return '127.0.0.1'
 }

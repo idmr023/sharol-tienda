@@ -455,7 +455,6 @@ function AuthForm({ onSuccess }: { onSuccess: () => void }) {
 
   // forgot-password state
   const [forgotStep, setForgotStep] = useState<'email' | 'reset'>('email')
-  const [demoCode, setDemoCode] = useState<string | null>(null)
   const [code, setCode] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmNewPassword, setConfirmNewPassword] = useState('')
@@ -508,14 +507,8 @@ function AuthForm({ onSuccess }: { onSuccess: () => void }) {
         setError(data.error || 'No se pudo procesar la solicitud')
         return
       }
-      if (data.demoCode) {
-        setDemoCode(data.demoCode)
-        setForgotStep('reset')
-      } else {
-        setForgotOk(
-          'Si existe una cuenta con ese correo, recibirás un código para restablecer tu contraseña.'
-        )
-      }
+      setForgotStep('reset')
+      setForgotOk('¡Código enviado! Revisa tu bandeja de entrada o spam.')
     } catch {
       setError('Error de conexión. Inténtalo de nuevo.')
     } finally {
@@ -560,7 +553,6 @@ function AuthForm({ onSuccess }: { onSuccess: () => void }) {
     return (
       <ForgotForm
         step={forgotStep}
-        demoCode={demoCode}
         email={email}
         setEmail={setEmail}
         code={code}
@@ -712,7 +704,6 @@ function AuthForm({ onSuccess }: { onSuccess: () => void }) {
             onClick={() => {
               setMode('forgot')
               setForgotStep('email')
-              setDemoCode(null)
               setError(null)
               setForgotOk(null)
             }}
@@ -748,7 +739,6 @@ function AuthForm({ onSuccess }: { onSuccess: () => void }) {
 
 function ForgotForm({
   step,
-  demoCode,
   email,
   setEmail,
   code,
@@ -767,7 +757,6 @@ function ForgotForm({
   onBack,
 }: {
   step: 'email' | 'reset'
-  demoCode: string | null
   email: string
   setEmail: (v: string) => void
   code: string
@@ -799,17 +788,8 @@ function ForgotForm({
       <p className="text-xs text-rose-300/70 mb-5">
         {step === 'email'
           ? 'Ingresa tu correo y te enviaremos un código de 6 dígitos.'
-          : 'Ingresa el código recibido y tu nueva contraseña.'}
+          : 'Ingresa el código recibido en tu correo y tu nueva contraseña.'}
       </p>
-
-      {demoCode && step === 'reset' && (
-        <div className="mb-4 rounded-xl bg-amber-500/10 border border-amber-500/30 px-4 py-3 text-center">
-          <p className="text-[10px] uppercase tracking-wider text-amber-300/70 mb-1">
-            Modo demo · sin email real
-          </p>
-          <p className="font-mono text-2xl tracking-[0.4em] text-amber-300 font-bold">{demoCode}</p>
-        </div>
-      )}
 
       {ok && (
         <p className="text-xs text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 rounded-xl px-3 py-2.5 mb-4">
