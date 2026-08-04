@@ -56,14 +56,7 @@ Sistema RBAC adaptado del proyecto `ripnel-platform`, con seguridad de sesión t
 - **Rate limiting**: 5 intentos fallidos de login → bloqueo de 15 min por email + IP.
 - El icono de **administración** solo es visible para `ADMIN`; las rutas `/api/admin/*` y las mutaciones de `/api/products` y `/api/categories` exigen `requireAdmin()`.
 
-### Usuario admin por defecto (seed)
 
-```
-email:    sharol@sharol.tienda
-password: SharolAdmin2026!
-```
-
-Configurables con `ADMIN_EMAIL` y `ADMIN_PASSWORD`.
 
 ### Endpoints de auth
 
