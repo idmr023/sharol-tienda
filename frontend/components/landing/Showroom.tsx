@@ -146,15 +146,6 @@ export const Showroom = forwardRef<HTMLDivElement, ShowroomProps>(function Showr
         </div>
       </div>
 
-      {/* Footer info */}
-      <footer className="max-w-7xl mx-auto w-full flex flex-col sm:flex-row justify-between items-center text-xs text-rose-300/60 pt-6 border-t border-rose-900/50">
-        <p>&copy; {new Date().getFullYear()} Sharol Tienda. Todos los derechos reservados.</p>
-        <div className="flex gap-6 mt-2 sm:mt-0">
-          <span>🇵🇪 Envíos a todo el Perú</span>
-          <span>✨ Calidad • Estilo • Exclusividad</span>
-        </div>
-      </footer>
-
       <AccountModal isOpen={accountOpen} onClose={() => setAccountOpen(false)} />
     </div>
   )

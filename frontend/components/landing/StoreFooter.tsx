@@ -72,7 +72,17 @@ export function StoreFooter() {
 
       <div className="max-w-7xl mx-auto mt-12 pt-6 border-t border-rose-900/30 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-rose-300/50">
         <p>&copy; {new Date().getFullYear()} Sharol Tienda. Todos los derechos reservados.</p>
-        <p>✨ Calidad • Estilo • Exclusividad</p>
+        <p className="flex items-center gap-1">
+          ✨ Creado por{' '}
+          <a
+            href="https://portafolio-red-seven.vercel.app/es"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold text-rose-300 hover:text-rose-200 underline underline-offset-2 transition"
+          >
+            IDMR
+          </a>
+        </p>
       </div>
     </footer>
   )
