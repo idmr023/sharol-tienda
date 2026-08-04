@@ -39,21 +39,22 @@ export async function GET() {
       ])
 
     const productNames = new Map(
-      products.map((p) => [p.id, p.name])
+      products.map((p: { id: string; name: string }) => [p.id, p.name])
     )
-    const topSelling = topSellers.map((seller) => ({
+    const topSelling = topSellers.map((seller: { productId: string; _sum: { quantity: number | null } }) => ({
       productId: seller.productId,
       name: productNames.get(seller.productId) ?? 'Desconocido',
       sold: seller._sum.quantity ?? 0,
     }))
 
-    const totalSalesMonth = ordersMonth.reduce((acc, o) => acc + o.totalAmount, 0)
+    const totalSalesMonth = ordersMonth.reduce((acc: number, o: { totalAmount: number }) => acc + o.totalAmount, 0)
     const totalSalesAll = orders.reduce(
-      (acc, o) => (o.status !== 'CANCELADO' ? acc + o.totalAmount : acc),
+      (acc: number, o: { totalAmount: number; status: string }) =>
+        o.status !== 'CANCELADO' ? acc + o.totalAmount : acc,
       0
     )
     const pendingCount = pendingOrders.length
-    const deliveredCount = orders.filter((o) => o.status === 'ENTREGADO').length
+    const deliveredCount = orders.filter((o: { status: string }) => o.status === 'ENTREGADO').length
     const lowStockCount = lowStock.length
     const productCount = products.length
 
