@@ -1,8 +1,7 @@
-<<<<<<< HEAD
 # Sharol Tienda 💍
 
 Tienda de joyas y accesorios de **Sharol** ("Exclusividad & Estilo") con envíos a todo el Perú.
-Construida con **Next.js 16 (App Router)**, **Prisma + SQLite**, **Tailwind CSS**, **Framer Motion** y **GSAP**.
+Construida con **Next.js 16 (App Router)**, **Prisma + PostgreSQL (Neon)**, **Tailwind CSS**, **Framer Motion** y **GSAP**.
 
 ## ✨ Características
 
@@ -17,13 +16,14 @@ Construida con **Next.js 16 (App Router)**, **Prisma + SQLite**, **Tailwind CSS*
 - **Cuentas y roles**: registro e inicio de sesión con autenticación segura. Solo el rol `ADMIN` (Sharol) ve y accede al panel de administración.
 - **Reseñas protegidas**: solo usuarios con sesión iniciada publican reseñas (1–5 estrellas), guardadas en la base de datos y mostradas en la sección de testimonios.
 - **Botón flotante de WhatsApp** integrado con el tema rose/dark.
-- **25 tests unitarios** (Vitest), **CI** con GitHub Actions, lint y typecheck.
+- **Correos por SMTP** (Gmail): notificación de inicio de sesión, comprobante de pago al correo de Sharol y recuperación de contraseña.
+- **31 tests unitarios** (Vitest), **CI** con GitHub Actions, lint y typecheck.
 
 ## 🚀 Puesta en marcha
 
 ```bash
 npm install
-cp .env.example .env   # ajusta los secretos JWT si quieres
+cp .env.example .env   # ajusta los secretos JWT y la URL de PostgreSQL (Neon)
 npm run db:push        # sincroniza la base de datos con el schema
 npm run db:seed        # crea categorías, productos, reseñas y el usuario admin
 npm run dev            # http://localhost:3002
@@ -43,7 +43,7 @@ npm run dev            # http://localhost:3002
 | `npm run start`        | Sirve el build en `:3002`                               |
 | `npm run lint`         | ESLint                                                   |
 | `npm run typecheck`    | `tsc --noEmit`                                           |
-| `npm run test`         | Vitest (25 tests)                                        |
+| `npm run test`         | Vitest (31 tests)                                        |
 
 ## 🔐 Autenticación y roles
 
@@ -76,7 +76,7 @@ Configurables con `ADMIN_EMAIL` y `ADMIN_PASSWORD`.
 | POST   | `/api/auth/forgot-password` | Solicita código de recuperación de 6 dígitos       |
 | POST   | `/api/auth/reset-password`  | Valida código y cambia contraseña (revoca sesiones) |
 
-> **Nota:** no hay integración de correos. En `forgot-password`, si la cuenta existe, el código se devuelve en `demoCode` (flujo demo). En producción se enviaría por email.
+> **Nota:** los correos se envían por **SMTP** (Gmail) usando las variables `SMTP_*`. En `forgot-password`, si la cuenta existe y SMTP no está configurado, el código se devuelve en `demoCode` (flujo demo).
 
 ### Perfil de usuario (requiere sesión)
 
@@ -138,20 +138,17 @@ sharol-tienda/
 │   └── lib/              # cart, constants, types, utils, orderStatus + tests
 ├── db/
 │   ├── schema.prisma     # Modelos: User, Session, LoginAttempt, PasswordResetToken, Category, Product, Order, OrderItem, OrderStatusHistory, WishlistItem, Review
-│   ├── dev.db            # SQLite
 │   └── seed.ts
 ├── public/               # Imágenes y logo
+├── render.yaml           # Config de despliegue en Render
 └── .github/workflows/ci.yml
 ```
 
 ## 📦 Stack principal
 
-Next.js 16 · React 19 · Prisma 6 · SQLite · Tailwind CSS 4 · Framer Motion · GSAP · lucide-react · jsonwebtoken · Vitest
+Next.js 16 · React 19 · Prisma 6 · PostgreSQL (Neon) · Tailwind CSS 4 · Framer Motion · GSAP · lucide-react · jsonwebtoken · nodemailer · Vitest
 
 ## 🎨 Estilo
 
 Tema oscuro (`#0d0d0d`) con acentos rose, tipografías Playfair Display (serif) + Inter (sans).
 WhatsApp de contacto: **916 663 318**.
-=======
-# sharol-tienda
->>>>>>> e16c3b294728e6dfa7d768fc2cbd390f6e6254f9
