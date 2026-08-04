@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Sharol Tienda 💍
 
 Tienda de joyas y accesorios de **Sharol** ("Exclusividad & Estilo") con envíos a todo el Perú.
@@ -151,3 +152,6 @@ Next.js 16 · React 19 · Prisma 6 · SQLite · Tailwind CSS 4 · Framer Motion 
 
 Tema oscuro (`#0d0d0d`) con acentos rose, tipografías Playfair Display (serif) + Inter (sans).
 WhatsApp de contacto: **916 663 318**.
+=======
+# sharol-tienda
+>>>>>>> e16c3b294728e6dfa7d768fc2cbd390f6e6254f9
